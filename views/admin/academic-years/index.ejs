@@ -1,0 +1,72 @@
+<div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
+  <div>
+    <h1 class="text-2xl md:text-3xl font-bold text-navy">Academic Years & Terms</h1>
+    <p class="text-sm text-slate-500 mt-1">Manage school years and terms</p>
+  </div>
+  <a href="/admin/academic-years/create" class="inline-flex items-center gap-2 bg-gold hover:bg-gold-light text-navy px-5 py-2.5 rounded-lg font-bold text-sm">
+    + Add Academic Year
+  </a>
+</div>
+
+<% if (years.length === 0) { %>
+  <div class="bg-white rounded-xl shadow-sm border border-slate-200 text-center py-16">
+    <div class="text-6xl mb-4 opacity-40">📅</div>
+    <p class="text-slate-500">No academic years yet.</p>
+  </div>
+<% } else { %>
+  <% years.forEach(function(year) { %>
+    <div class="bg-white rounded-xl shadow-sm border border-slate-200 mb-4 overflow-hidden">
+      <div class="px-6 py-4 border-b border-slate-100 flex justify-between items-center">
+        <div>
+          <h2 class="font-bold text-navy text-lg flex items-center gap-2">
+            <%= year.name %>
+            <% if (year.isCurrent) { %>
+              <span class="text-xs bg-gold text-navy px-2 py-0.5 rounded-full font-semibold">CURRENT</span>
+            <% } %>
+          </h2>
+          <p class="text-xs text-slate-500 mt-0.5">
+            <%= new Date(year.startDate).toDateString() %> — <%= new Date(year.endDate).toDateString() %>
+          </p>
+        </div>
+        <div class="flex gap-2">
+          <% if (!year.isCurrent) { %>
+            <form method="POST" action="/admin/academic-years/<%= year.id %>/set-current">
+              <button type="submit" class="bg-gold hover:bg-gold-light text-navy px-3 py-1.5 rounded-lg text-xs font-semibold">Set Current</button>
+            </form>
+          <% } %>
+          <form method="POST" action="/admin/academic-years/<%= year.id %>/delete" onsubmit="return confirm('Delete this academic year?');">
+            <button type="submit" class="text-red-500 text-xs font-semibold hover:underline px-3 py-1.5">Delete</button>
+          </form>
+        </div>
+      </div>
+
+      <div class="p-6">
+        <h3 class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3">Terms</h3>
+        <% if (year.terms.length === 0) { %>
+          <p class="text-sm text-slate-500">No terms in this year.</p>
+        <% } else { %>
+          <div class="grid md:grid-cols-3 gap-3">
+            <% year.terms.forEach(function(term) { %>
+              <div class="border border-slate-200 rounded-lg p-4 <%= term.isCurrent ? 'border-gold bg-gold/5' : '' %>">
+                <div class="flex items-center justify-between mb-2">
+                  <div class="font-semibold text-navy"><%= term.name %></div>
+                  <% if (term.isCurrent) { %>
+                    <span class="text-[10px] bg-gold text-navy px-2 py-0.5 rounded-full font-semibold">CURRENT</span>
+                  <% } %>
+                </div>
+                <p class="text-xs text-slate-500 mb-3">
+                  <%= new Date(term.startDate).toLocaleDateString() %> — <%= new Date(term.endDate).toLocaleDateString() %>
+                </p>
+                <% if (!term.isCurrent) { %>
+                  <form method="POST" action="/admin/academic-years/term/<%= term.id %>/set-current">
+                    <button type="submit" class="text-xs text-navy font-semibold hover:underline">Set as current term →</button>
+                  </form>
+                <% } %>
+              </div>
+            <% }) %>
+          </div>
+        <% } %>
+      </div>
+    </div>
+  <% }) %>
+<% } %>

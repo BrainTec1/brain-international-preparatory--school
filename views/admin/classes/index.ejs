@@ -1,0 +1,50 @@
+<div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
+  <div>
+    <h1 class="text-2xl md:text-3xl font-bold text-navy">Classes</h1>
+    <p class="text-sm text-slate-500 mt-1"><%= total %> classes</p>
+  </div>
+  <a href="/admin/classes/create" class="inline-flex items-center gap-2 bg-gold hover:bg-gold-light text-navy px-5 py-2.5 rounded-lg font-bold text-sm">
+    + Add Class
+  </a>
+</div>
+
+<div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+  <% if (classes.length === 0) { %>
+    <div class="text-center py-16 px-4">
+      <div class="text-6xl mb-4 opacity-40">🏫</div>
+      <p class="text-slate-500">No classes yet.</p>
+    </div>
+  <% } else { %>
+    <div class="overflow-x-auto">
+      <table class="w-full text-sm">
+        <thead class="bg-slate-50 text-slate-600 uppercase text-xs tracking-wider">
+          <tr>
+            <th class="px-4 py-3 text-left font-semibold">Class</th>
+            <th class="px-4 py-3 text-left font-semibold">Level</th>
+            <th class="px-4 py-3 text-left font-semibold">Class Teacher</th>
+            <th class="px-4 py-3 text-left font-semibold">Students</th>
+            <th class="px-4 py-3 text-left font-semibold">Capacity</th>
+            <th class="px-4 py-3 text-right font-semibold">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% classes.forEach(function(c) { %>
+            <tr class="border-t border-slate-100 hover:bg-slate-50">
+              <td class="px-4 py-3 font-semibold text-navy"><%= c.name %></td>
+              <td class="px-4 py-3 text-slate-600 capitalize"><%= c.level.replace(/_/g, ' ') %></td>
+              <td class="px-4 py-3 text-slate-600"><%= c.classTeacher ? c.classTeacher.fullName : '—' %></td>
+              <td class="px-4 py-3 text-slate-600">
+                <%= c._count.students %> / <%= c.capacity %>
+              </td>
+              <td class="px-4 py-3 text-slate-600"><%= c.capacity %></td>
+              <td class="px-4 py-3 text-right whitespace-nowrap">
+                <a href="/admin/classes/<%= c.id %>" class="text-navy font-semibold text-xs hover:underline">View</a>
+                <a href="/admin/classes/<%= c.id %>/edit" class="text-gold font-semibold text-xs ml-3 hover:underline">Edit</a>
+              </td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  <% } %>
+</div>
