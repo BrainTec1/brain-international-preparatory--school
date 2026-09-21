@@ -4,7 +4,6 @@ const prisma = require('../lib/prisma');
 exports.index = async (req, res) => {
   try {
     const { search, classId, status } = req.query;
-
     const where = { deletedAt: null };
 
     if (search) {
@@ -14,7 +13,6 @@ exports.index = async (req, res) => {
         { studentId: { contains: search } },
       ];
     }
-
     if (classId) where.classId = parseInt(classId);
     if (status)  where.status = status;
 
@@ -54,7 +52,6 @@ exports.index = async (req, res) => {
 exports.create = async (req, res) => {
   try {
     const classes = await prisma.schoolClass.findMany({ orderBy: { name: 'asc' } });
-
     res.render('admin/students/create', {
       title: 'Add Student',
       layout: 'layouts/portal',
@@ -167,14 +164,12 @@ exports.show = async (req, res) => {
 exports.edit = async (req, res) => {
   try {
     const student = await prisma.student.findUnique({ where: { id: parseInt(req.params.id) } });
-
     if (!student || student.deletedAt) {
       req.flash('error', 'Student not found.');
       return res.redirect('/admin/students');
     }
 
     const classes = await prisma.schoolClass.findMany({ orderBy: { name: 'asc' } });
-
     res.render('admin/students/edit', {
       title: 'Edit ' + student.firstName + ' ' + student.lastName,
       layout: 'layouts/portal',
@@ -246,7 +241,7 @@ exports.update = async (req, res) => {
   }
 };
 
-// ARCHIVE (SOFT DELETE)
+// ARCHIVE STUDENT
 exports.destroy = async (req, res) => {
   try {
     const id = parseInt(req.params.id);
