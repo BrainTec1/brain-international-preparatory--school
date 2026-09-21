@@ -1,0 +1,59 @@
+<div class="flex items-center gap-3 mb-6">
+  <a href="/admin/parents/<%= parent.id %>" class="text-slate-400 hover:text-navy text-xl">←</a>
+  <div>
+    <h1 class="text-2xl md:text-3xl font-bold text-navy">Edit Parent</h1>
+    <p class="text-sm text-slate-500 mt-1"><%= parent.fullName %></p>
+  </div>
+</div>
+
+<form method="POST" action="/admin/parents/<%= parent.id %>" class="max-w-3xl">
+  <div class="bg-white rounded-xl shadow-sm border border-slate-200">
+
+    <div class="px-6 py-4 border-b border-slate-100">
+      <h2 class="font-bold text-navy">Parent Information</h2>
+    </div>
+
+    <div class="p-6 grid md:grid-cols-2 gap-5">
+
+      <div class="md:col-span-2">
+        <label class="block text-sm font-medium text-slate-700 mb-1.5">Full Name *</label>
+        <input type="text" name="fullName" value="<%= parent.fullName || '' %>"
+               class="w-full px-4 py-2.5 rounded-lg border border-slate-300 focus:border-gold outline-none text-sm">
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-slate-700 mb-1.5">Phone *</label>
+        <input type="text" name="phone" value="<%= parent.phone || '' %>"
+               class="w-full px-4 py-2.5 rounded-lg border border-slate-300 focus:border-gold outline-none text-sm">
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-slate-700 mb-1.5">Relationship *</label>
+        <select name="relationship" class="w-full px-4 py-2.5 rounded-lg border border-slate-300 focus:border-gold outline-none text-sm">
+          <option value="father" <%= parent.relationship === 'father' ? 'selected' : '' %>>Father</option>
+          <option value="mother" <%= parent.relationship === 'mother' ? 'selected' : '' %>>Mother</option>
+          <option value="guardian" <%= parent.relationship === 'guardian' ? 'selected' : '' %>>Guardian</option>
+        </select>
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-slate-700 mb-1.5">Occupation</label>
+        <input type="text" name="occupation" value="<%= parent.occupation || '' %>"
+               class="w-full px-4 py-2.5 rounded-lg border border-slate-300 focus:border-gold outline-none text-sm">
+      </div>
+
+      <div class="md:col-span-2">
+        <label class="block text-sm font-medium text-slate-700 mb-1.5">Address</label>
+        <input type="text" name="address" value="<%= parent.address || '' %>"
+               class="w-full px-4 py-2.5 rounded-lg border border-slate-300 focus:border-gold outline-none text-sm">
+      </div>
+
+    </div>
+
+    <div class="px-6 py-4 border-t border-slate-100 bg-slate-50 flex justify-end gap-3 rounded-b-xl">
+      <a href="/admin/parents/<%= parent.id %>" class="px-5 py-2.5 rounded-lg text-slate-600 hover:bg-slate-200 text-sm font-semibold">Cancel</a>
+      <button type="submit" class="bg-navy hover:bg-navy-light text-white px-6 py-2.5 rounded-lg font-bold text-sm">Update Parent</button>
+    </div>
+
+  </div>
+</form>

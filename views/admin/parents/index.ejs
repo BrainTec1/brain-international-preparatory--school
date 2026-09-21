@@ -1,0 +1,73 @@
+<div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
+  <div>
+    <h1 class="text-2xl md:text-3xl font-bold text-navy">Parents</h1>
+    <p class="text-sm text-slate-500 mt-1">
+      <%= counts.total %> parents · <%= counts.withChildren %> with linked children
+    </p>
+  </div>
+  <a href="/admin/parents/create" class="inline-flex items-center gap-2 bg-gold hover:bg-gold-light text-navy px-5 py-2.5 rounded-lg font-bold text-sm">
+    + Add Parent
+  </a>
+</div>
+
+<form method="GET" class="bg-white rounded-xl shadow-sm border border-slate-200 p-4 mb-6 flex flex-col md:flex-row gap-3">
+  <input type="text" name="search" value="<%= filters.search %>" placeholder="Search by name, phone, email..."
+         class="flex-1 px-4 py-2.5 rounded-lg border border-slate-300 focus:border-gold outline-none text-sm">
+
+  <select name="relationship" class="px-4 py-2.5 rounded-lg border border-slate-300 focus:border-gold outline-none text-sm">
+    <option value="">All Relations</option>
+    <option value="father" <%= filters.relationship === 'father' ? 'selected' : '' %>>Father</option>
+    <option value="mother" <%= filters.relationship === 'mother' ? 'selected' : '' %>>Mother</option>
+    <option value="guardian" <%= filters.relationship === 'guardian' ? 'selected' : '' %>>Guardian</option>
+  </select>
+
+  <button class="bg-navy hover:bg-navy-light text-white px-6 py-2.5 rounded-lg font-semibold text-sm">Filter</button>
+
+  <% if (filters.search || filters.relationship) { %>
+    <a href="/admin/parents" class="px-4 py-2.5 rounded-lg text-slate-500 hover:bg-slate-100 text-sm text-center">Clear</a>
+  <% } %>
+</form>
+
+<div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+  <% if (parents.length === 0) { %>
+    <div class="text-center py-16 px-4">
+      <div class="text-6xl mb-4 opacity-40">👪</div>
+      <p class="text-slate-500">No parents yet.</p>
+      <a href="/admin/parents/create" class="inline-block mt-4 text-gold font-semibold hover:underline">Add the first parent →</a>
+    </div>
+  <% } else { %>
+    <div class="overflow-x-auto">
+      <table class="w-full text-sm">
+        <thead class="bg-slate-50 text-slate-600 uppercase text-xs tracking-wider">
+          <tr>
+            <th class="px-4 py-3 text-left font-semibold">Name</th>
+            <th class="px-4 py-3 text-left font-semibold">Relationship</th>
+            <th class="px-4 py-3 text-left font-semibold">Phone</th>
+            <th class="px-4 py-3 text-left font-semibold">Children</th>
+            <th class="px-4 py-3 text-right font-semibold">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% parents.forEach(function(p) { %>
+            <tr class="border-t border-slate-100 hover:bg-slate-50">
+              <td class="px-4 py-3 font-semibold text-navy"><%= p.fullName %></td>
+              <td class="px-4 py-3 text-slate-600 capitalize"><%= p.relationship %></td>
+              <td class="px-4 py-3 text-slate-600"><%= p.phone %></td>
+              <td class="px-4 py-3 text-slate-600 text-xs">
+                <% if (p.children.length === 0) { %>
+                  <span class="text-slate-400">None linked</span>
+                <% } else { %>
+                  <%= p.children.map(c => c.student.firstName + ' ' + c.student.lastName).join(', ') %>
+                <% } %>
+              </td>
+              <td class="px-4 py-3 text-right whitespace-nowrap">
+                <a href="/admin/parents/<%= p.id %>" class="text-navy font-semibold text-xs hover:underline">View</a>
+                <a href="/admin/parents/<%= p.id %>/edit" class="text-gold font-semibold text-xs ml-3 hover:underline">Edit</a>
+              </td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  <% } %>
+</div>

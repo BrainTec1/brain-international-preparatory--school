@@ -1,0 +1,74 @@
+<div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
+  <div>
+    <h1 class="text-2xl md:text-3xl font-bold text-navy">Teachers</h1>
+    <p class="text-sm text-slate-500 mt-1">
+      <%= counts.total %> teachers · <%= counts.active %> active
+    </p>
+  </div>
+  <a href="/admin/teachers/create" class="inline-flex items-center gap-2 bg-gold hover:bg-gold-light text-navy px-5 py-2.5 rounded-lg font-bold text-sm">
+    + Add Teacher
+  </a>
+</div>
+
+<form method="GET" class="bg-white rounded-xl shadow-sm border border-slate-200 p-4 mb-6 flex flex-col md:flex-row gap-3">
+  <input type="text" name="search" value="<%= filters.search %>" placeholder="Search by name, ID, email, phone..."
+         class="flex-1 px-4 py-2.5 rounded-lg border border-slate-300 focus:border-gold outline-none text-sm">
+
+  <select name="status" class="px-4 py-2.5 rounded-lg border border-slate-300 focus:border-gold outline-none text-sm">
+    <option value="">All Statuses</option>
+    <option value="active" <%= filters.status === 'active' ? 'selected' : '' %>>Active</option>
+    <option value="on_leave" <%= filters.status === 'on_leave' ? 'selected' : '' %>>On Leave</option>
+    <option value="inactive" <%= filters.status === 'inactive' ? 'selected' : '' %>>Inactive</option>
+  </select>
+
+  <button class="bg-navy hover:bg-navy-light text-white px-6 py-2.5 rounded-lg font-semibold text-sm">Filter</button>
+
+  <% if (filters.search || filters.status) { %>
+    <a href="/admin/teachers" class="px-4 py-2.5 rounded-lg text-slate-500 hover:bg-slate-100 text-sm text-center">Clear</a>
+  <% } %>
+</form>
+
+<div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+  <% if (teachers.length === 0) { %>
+    <div class="text-center py-16 px-4">
+      <div class="text-6xl mb-4 opacity-40">👨‍🏫</div>
+      <p class="text-slate-500">No teachers yet.</p>
+      <a href="/admin/teachers/create" class="inline-block mt-4 text-gold font-semibold hover:underline">Add the first teacher →</a>
+    </div>
+  <% } else { %>
+    <div class="overflow-x-auto">
+      <table class="w-full text-sm">
+        <thead class="bg-slate-50 text-slate-600 uppercase text-xs tracking-wider">
+          <tr>
+            <th class="px-4 py-3 text-left font-semibold">Staff ID</th>
+            <th class="px-4 py-3 text-left font-semibold">Name</th>
+            <th class="px-4 py-3 text-left font-semibold">Phone</th>
+            <th class="px-4 py-3 text-left font-semibold">Email</th>
+            <th class="px-4 py-3 text-left font-semibold">Status</th>
+            <th class="px-4 py-3 text-right font-semibold">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% teachers.forEach(function(t) { %>
+            <tr class="border-t border-slate-100 hover:bg-slate-50">
+              <td class="px-4 py-3 font-mono text-xs text-slate-600"><%= t.staffId %></td>
+              <td class="px-4 py-3 font-semibold text-navy"><%= t.fullName %></td>
+              <td class="px-4 py-3 text-slate-600"><%= t.phone %></td>
+              <td class="px-4 py-3 text-slate-600 text-xs"><%= t.email || '—' %></td>
+              <td class="px-4 py-3">
+                <% var badge = 'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-green-100 text-green-800'; %>
+                <% if (t.status === 'inactive') badge = 'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-red-100 text-red-800'; %>
+                <% if (t.status === 'on_leave') badge = 'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-100 text-amber-800'; %>
+                <span class="<%= badge %>"><%= t.status %></span>
+              </td>
+              <td class="px-4 py-3 text-right whitespace-nowrap">
+                <a href="/admin/teachers/<%= t.id %>" class="text-navy font-semibold text-xs hover:underline">View</a>
+                <a href="/admin/teachers/<%= t.id %>/edit" class="text-gold font-semibold text-xs ml-3 hover:underline">Edit</a>
+              </td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  <% } %>
+</div>
