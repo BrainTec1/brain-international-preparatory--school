@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title><%= title %> | Brain International School</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: { extend: {
+        colors: {
+          navy: { DEFAULT: '#0B1F3A', light: '#16345F' },
+          gold: { DEFAULT: '#C9A227', light: '#E4C158' },
+        },
+        fontFamily: {
+          sans: ['Inter', 'system-ui', 'sans-serif'],
+          display: ['"Playfair Display"', 'Georgia', 'serif'],
+        },
+      }}
+    }
+  </script>
+</head>
+<body class="bg-white font-sans text-slate-800">
+  <div class="bg-navy text-white text-xs md:text-sm py-2">
+    <div class="max-w-7xl mx-auto px-4 flex flex-wrap justify-between gap-2">
+      <span>📍 Amasaman, near Police Station, Greater Accra</span>
+      <a href="/login" class="text-gold hover:underline font-semibold">Portal Login →</a>
+    </div>
+  </div>
+  <nav class="bg-white shadow-sm sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 flex justify-between items-center h-20">
+      <a href="/" class="flex items-center gap-3">
+        <div class="w-14 h-14 rounded-full bg-navy flex items-center justify-center text-gold font-bold text-xl">BIS</div>
+        <div class="hidden sm:block">
+          <div class="font-bold text-base md:text-lg text-navy leading-tight">Brain International School</div>
+          <div class="text-[10px] md:text-xs text-gold font-semibold">Educate. Inspire. Transform.</div>
+        </div>
+      </a>
+      <div class="hidden lg:flex items-center gap-7 font-medium text-sm">
+        <a href="/" class="text-slate-700 hover:text-gold">Home</a>
+        <a href="/about" class="text-slate-700 hover:text-gold">About</a>
+        <a href="/academics" class="text-slate-700 hover:text-gold">Academics</a>
+        <a href="/admissions" class="text-slate-700 hover:text-gold">Admissions</a>
+        <a href="/contact" class="text-slate-700 hover:text-gold">Contact</a>
+        <a href="/login" class="bg-gold text-navy px-4 py-2 rounded-lg font-semibold text-xs">Login</a>
+      </div>
+    </div>
+  </nav>
+  <main>
+    <%- body %>
+  </main>
+  <footer class="bg-navy text-white py-12 mt-16">
+    <div class="max-w-7xl mx-auto px-4 text-center text-xs text-slate-400">
+      © <%= new Date().getFullYear() %> Brain International School. All rights reserved.
+    </div>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,19 @@
+<div class="min-h-screen bg-slate-50 flex items-center justify-center p-4 font-sans">
+  <div class="text-center max-w-md">
+    <div class="text-8xl mb-6">🚫</div>
+    <h1 class="text-4xl font-bold text-navy mb-3">Access Denied</h1>
+    <p class="text-slate-500 mb-8">
+      You don't have permission to view this page. Please contact the administrator if you believe this is a mistake.
+    </p>
+    <div class="flex flex-wrap gap-3 justify-center">
+      <a href="/" class="inline-block bg-navy hover:bg-navy-light text-white px-6 py-3 rounded-lg font-bold transition">
+        ← Back to Home
+      </a>
+      <form method="POST" action="/logout" class="inline">
+        <button class="inline-block border-2 border-navy text-navy hover:bg-navy hover:text-white px-6 py-3 rounded-lg font-bold transition">
+          Sign out
+        </button>
+      </form>
+    </div>
+  </div>
+</div>

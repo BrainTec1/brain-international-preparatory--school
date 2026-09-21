@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title><%= typeof title !== 'undefined' ? title : 'BIS' %> | Brain International School</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: { extend: {
+        colors: {
+          navy: { DEFAULT: '#0B1F3A', light: '#16345F' },
+          gold: { DEFAULT: '#C9A227', light: '#E4C158' },
+        },
+        fontFamily: {
+          sans: ['Inter', 'system-ui', 'sans-serif'],
+          display: ['"Playfair Display"', 'Georgia', 'serif'],
+        },
+      }}
+    }
+  </script>
+</head>
+<body class="bg-slate-50">
+  <%- body %>
+</body>
+</html>
