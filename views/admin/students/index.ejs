@@ -1,0 +1,87 @@
+<div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
+  <div>
+    <h1 class="text-2xl md:text-3xl font-bold text-navy">Students</h1>
+    <p class="text-sm text-slate-500 mt-1">
+      <%= counts.total %> students · <%= counts.active %> active
+    </p>
+  </div>
+  <a href="/admin/students/create" class="inline-flex items-center gap-2 bg-gold hover:bg-gold-light text-navy px-5 py-2.5 rounded-lg font-bold text-sm">
+    + Add Student
+  </a>
+</div>
+
+<form method="GET" class="bg-white rounded-xl shadow-sm border border-slate-200 p-4 mb-6 flex flex-col md:flex-row gap-3">
+  <input type="text" name="search" value="<%= filters.search %>" placeholder="Search by name or student ID..."
+         class="flex-1 px-4 py-2.5 rounded-lg border border-slate-300 focus:border-gold focus:ring-2 focus:ring-gold/30 outline-none text-sm">
+
+  <select name="classId" class="px-4 py-2.5 rounded-lg border border-slate-300 focus:border-gold outline-none text-sm">
+    <option value="">All Classes</option>
+    <% classes.forEach(function(c) { %>
+      <option value="<%= c.id %>" <%= filters.classId == c.id ? 'selected' : '' %>><%= c.name %></option>
+    <% }) %>
+  </select>
+
+  <select name="status" class="px-4 py-2.5 rounded-lg border border-slate-300 focus:border-gold outline-none text-sm">
+    <option value="">All Statuses</option>
+    <option value="active" <%= filters.status === 'active' ? 'selected' : '' %>>Active</option>
+    <option value="graduated" <%= filters.status === 'graduated' ? 'selected' : '' %>>Graduated</option>
+    <option value="transferred" <%= filters.status === 'transferred' ? 'selected' : '' %>>Transferred</option>
+    <option value="suspended" <%= filters.status === 'suspended' ? 'selected' : '' %>>Suspended</option>
+  </select>
+
+  <button class="bg-navy hover:bg-navy-light text-white px-6 py-2.5 rounded-lg font-semibold text-sm">
+    Filter
+  </button>
+
+  <% if (filters.search || filters.classId || filters.status) { %>
+    <a href="/admin/students" class="px-4 py-2.5 rounded-lg text-slate-500 hover:bg-slate-100 text-sm text-center">Clear</a>
+  <% } %>
+</form>
+
+<div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+  <% if (students.length === 0) { %>
+    <div class="text-center py-16 px-4">
+      <div class="text-6xl mb-4 opacity-40">👨‍🎓</div>
+      <p class="text-slate-500">No students yet.</p>
+      <a href="/admin/students/create" class="inline-block mt-4 text-gold font-semibold hover:underline">
+        Add the first student →
+      </a>
+    </div>
+  <% } else { %>
+    <div class="overflow-x-auto">
+      <table class="w-full text-sm">
+        <thead class="bg-slate-50 text-slate-600 uppercase text-xs tracking-wider">
+          <tr>
+            <th class="px-4 py-3 text-left font-semibold">Student ID</th>
+            <th class="px-4 py-3 text-left font-semibold">Name</th>
+            <th class="px-4 py-3 text-left font-semibold">Class</th>
+            <th class="px-4 py-3 text-left font-semibold">Gender</th>
+            <th class="px-4 py-3 text-left font-semibold">Status</th>
+            <th class="px-4 py-3 text-right font-semibold">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% students.forEach(function(s) { %>
+            <tr class="border-t border-slate-100 hover:bg-slate-50">
+              <td class="px-4 py-3 font-mono text-xs text-slate-600"><%= s.studentId %></td>
+              <td class="px-4 py-3 font-semibold text-navy"><%= s.firstName %> <%= s.lastName %></td>
+              <td class="px-4 py-3 text-slate-600"><%= s.class ? s.class.name : '—' %></td>
+              <td class="px-4 py-3 text-slate-600 capitalize"><%= s.gender %></td>
+              <td class="px-4 py-3">
+                <% var badge = 'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-green-100 text-green-800'; %>
+                <% if (s.status === 'suspended' || s.status === 'withdrawn') badge = 'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-red-100 text-red-800'; %>
+                <% if (s.status === 'graduated') badge = 'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-blue-100 text-blue-800'; %>
+                <% if (s.status === 'transferred' || s.status === 'archived') badge = 'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-100 text-amber-800'; %>
+                <span class="<%= badge %>"><%= s.status %></span>
+              </td>
+              <td class="px-4 py-3 text-right whitespace-nowrap">
+                <a href="/admin/students/<%= s.id %>" class="text-navy font-semibold text-xs hover:underline">View</a>
+                <a href="/admin/students/<%= s.id %>/edit" class="text-gold font-semibold text-xs ml-3 hover:underline">Edit</a>
+              </td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  <% } %>
+</div>

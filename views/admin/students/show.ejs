@@ -1,0 +1,82 @@
+<div class="flex items-center gap-3 mb-6">
+  <a href="/admin/students" class="text-slate-400 hover:text-navy text-xl">←</a>
+  <div class="flex-1">
+    <h1 class="text-2xl md:text-3xl font-bold text-navy"><%= student.firstName %> <%= student.lastName %></h1>
+    <p class="text-sm text-slate-500 mt-1 font-mono"><%= student.studentId %></p>
+  </div>
+  <a href="/admin/students/<%= student.id %>/edit" class="bg-gold hover:bg-gold-light text-navy px-4 py-2 rounded-lg font-semibold text-sm">
+    Edit
+  </a>
+</div>
+
+<div class="grid md:grid-cols-3 gap-6">
+
+  <div class="md:col-span-2 bg-white rounded-xl shadow-sm border border-slate-200">
+    <div class="px-6 py-4 border-b border-slate-100">
+      <h2 class="font-bold text-navy">Student Information</h2>
+    </div>
+    <div class="p-6 grid md:grid-cols-2 gap-5 text-sm">
+
+      <div>
+        <div class="text-xs text-slate-500 uppercase tracking-wider mb-1">Student ID</div>
+        <div class="font-mono"><%= student.studentId %></div>
+      </div>
+
+      <div>
+        <div class="text-xs text-slate-500 uppercase tracking-wider mb-1">Status</div>
+        <div class="capitalize"><%= student.status %></div>
+      </div>
+
+      <div>
+        <div class="text-xs text-slate-500 uppercase tracking-wider mb-1">Date of Birth</div>
+        <div><%= new Date(student.dateOfBirth).toDateString() %></div>
+      </div>
+
+      <div>
+        <div class="text-xs text-slate-500 uppercase tracking-wider mb-1">Gender</div>
+        <div class="capitalize"><%= student.gender %></div>
+      </div>
+
+      <div>
+        <div class="text-xs text-slate-500 uppercase tracking-wider mb-1">Class</div>
+        <div><%= student.class ? student.class.name : '—' %></div>
+      </div>
+
+      <div>
+        <div class="text-xs text-slate-500 uppercase tracking-wider mb-1">Admission Date</div>
+        <div><%= new Date(student.admissionDate).toDateString() %></div>
+      </div>
+
+      <div class="md:col-span-2">
+        <div class="text-xs text-slate-500 uppercase tracking-wider mb-1">Address</div>
+        <div><%= student.address || '—' %></div>
+      </div>
+
+      <div class="md:col-span-2">
+        <div class="text-xs text-slate-500 uppercase tracking-wider mb-1">Previous School</div>
+        <div><%= student.previousSchool || '—' %></div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="bg-white rounded-xl shadow-sm border border-slate-200">
+    <div class="px-6 py-4 border-b border-slate-100">
+      <h2 class="font-bold text-navy">Quick Actions</h2>
+    </div>
+    <div class="p-6 space-y-3">
+      <a href="/admin/students/<%= student.id %>/edit" class="block w-full text-center bg-navy hover:bg-navy-light text-white px-4 py-2.5 rounded-lg font-semibold text-sm">
+        Edit Student
+      </a>
+      <form method="POST" action="/admin/students/<%= student.id %>/delete" onsubmit="return confirm('Archive this student? They will no longer appear in the list.');">
+        <button type="submit" class="w-full text-center border-2 border-red-500 text-red-500 hover:bg-red-50 px-4 py-2.5 rounded-lg font-semibold text-sm">
+          Archive Student
+        </button>
+      </form>
+      <a href="/admin/students" class="block w-full text-center text-slate-500 hover:bg-slate-100 px-4 py-2.5 rounded-lg font-semibold text-sm">
+        ← Back to List
+      </a>
+    </div>
+  </div>
+
+</div>

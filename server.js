@@ -10,37 +10,26 @@ const methodOverride = require('method-override');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// ═══ VIEW ENGINE ═══
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 app.use(expressLayouts);
 app.set('layout', 'layouts/main');
 
-// ═══ STATIC FILES ═══
 app.use(express.static(path.join(__dirname, 'public')));
-
-// ═══ PARSERS ═══
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cookieParser());
 app.use(methodOverride('_method'));
 
-// ═══ SESSIONS ═══
 app.use(session({
   secret: process.env.SESSION_SECRET || 'change-me',
   resave: false,
   saveUninitialized: false,
-  cookie: {
-    maxAge: 1000 * 60 * 60 * 24, // 24 hours
-    httpOnly: true,
-    secure: false, // set true in production with HTTPS
-  },
+  cookie: { maxAge: 1000 * 60 * 60 * 24, httpOnly: true, secure: false },
 }));
 
-// ═══ FLASH MESSAGES ═══
 app.use(flash());
 
-// ═══ GLOBAL VIEW VARIABLES ═══
 app.use((req, res, next) => {
   res.locals.user = req.session.user || null;
   res.locals.success = req.flash('success');
@@ -52,36 +41,31 @@ app.use((req, res, next) => {
   next();
 });
 
-// ═══ ROUTES ═══
-const publicRoutes  = require('./routes/public');
-const authRoutes    = require('./routes/auth');
-const adminRoutes   = require('./routes/admin');
-const teacherRoutes = require('./routes/teacher');
-const parentRoutes  = require('./routes/parent');
-const studentRoutes = require('./routes/student');
+const publicRoutes        = require('./routes/public');
+const authRoutes          = require('./routes/auth');
+const adminRoutes         = require('./routes/admin');
+const adminStudentRoutes  = require('./routes/students');
+const teacherRoutes       = require('./routes/teacher');
+const parentRoutes        = require('./routes/parent');
+const studentPortalRoutes = require('./routes/student');
 
 app.use('/', publicRoutes);
 app.use('/', authRoutes);
+app.use('/admin/students', adminStudentRoutes);
 app.use('/admin',   adminRoutes);
 app.use('/teacher', teacherRoutes);
 app.use('/parent',  parentRoutes);
-app.use('/student', studentRoutes);
+app.use('/student', studentPortalRoutes);
 
-// ═══ 404 ═══
 app.use((req, res) => {
-  res.status(404).render('pages/404', {
-    title: 'Page Not Found',
-    layout: 'layouts/blank',
-  });
+  res.status(404).render('pages/404', { title: 'Page Not Found', layout: 'layouts/blank' });
 });
 
-// ═══ ERROR HANDLER ═══
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).send('Something broke!');
 });
 
-// ═══ START ═══
 app.listen(PORT, '0.0.0.0', () => {
   console.log('🚀 BIS server running at http://localhost:' + PORT);
 });
